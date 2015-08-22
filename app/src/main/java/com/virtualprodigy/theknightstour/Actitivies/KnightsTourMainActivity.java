@@ -1,4 +1,4 @@
-package com.virtualprodigy.theknightstour;
+package com.virtualprodigy.theknightstour.Actitivies;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -6,6 +6,9 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+
+import com.virtualprodigy.theknightstour.R;
+import com.virtualprodigy.theknightstour.Utilities.CalculateKnightMove;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

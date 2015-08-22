@@ -1,4 +1,4 @@
-package com.virtualprodigy.theknightstour;
+package com.virtualprodigy.theknightstour.Utilities;
 
 /**
  * Created by virtualprodigyllc on 8/10/15.
