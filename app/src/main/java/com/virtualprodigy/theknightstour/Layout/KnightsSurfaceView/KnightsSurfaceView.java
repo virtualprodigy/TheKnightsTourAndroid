@@ -9,6 +9,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.virtualprodigy.theknightstour.Layout.Chessboard;
+import com.virtualprodigy.theknightstour.Layout.Knight;
 import com.virtualprodigy.theknightstour.Utilities.CalculateKnightMove;
 
 /**
@@ -18,6 +19,8 @@ public class KnightsSurfaceView extends SurfaceView implements SurfaceHolder.Cal
     private KnightsSurfaceThread thread;
     private Context context;
     private Chessboard chessboard;
+    private Knight knight;
+    private CalculateKnightMove knightMovements;
 
     public KnightsSurfaceView(Context context) {
         super(context);
@@ -38,12 +41,16 @@ public class KnightsSurfaceView extends SurfaceView implements SurfaceHolder.Cal
         getHolder().addCallback(this);
         setFocusable(true);
         chessboard = new Chessboard(context, CalculateKnightMove.boardSpaces);
+        knightMovements = new CalculateKnightMove(context);
+        knightMovements.startingPoint();
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         chessboard.prepareChessBoardToDraw(h, w);
+        knight = new Knight(context, knightMovements.getknightsPath(), chessboard.getboardSquaresArray());
+        knight.createKnightBitmap(chessboard.getSquareSize());
     }
 
     @Override
@@ -93,8 +100,7 @@ public class KnightsSurfaceView extends SurfaceView implements SurfaceHolder.Cal
      * to perform any updates in the logic before drawing the next squence
      */
     public void update() {
-
-
+        knight.update();
     }
 
     /**
@@ -108,6 +114,7 @@ public class KnightsSurfaceView extends SurfaceView implements SurfaceHolder.Cal
         //draw the canvas background first
         canvas.drawColor(Color.BLUE);
         chessboard.draw(canvas);
+        knight.draw(canvas);
 
     }
 

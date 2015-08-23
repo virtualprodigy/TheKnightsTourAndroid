@@ -24,6 +24,7 @@ public class Chessboard {
     private ArrayList<Rect> boardSquaresArray;
     private int squareColor1 = Color.WHITE;
     private int squareColor2 = Color.BLACK;
+    private int squareSize;
 
     public Chessboard(Context context, int numRowsColumns) {
         this.context = context;
@@ -57,7 +58,7 @@ public class Chessboard {
     private void calcaulteBoardSquareSize(int surfViewHeight, int surfViewWidth) {
         //take the dimension that is smallest, subtract the
         //padding from it and then divide it by numRowsColumns
-        int squareSize = (surfViewWidth < surfViewHeight) ? surfViewWidth : surfViewHeight;
+        squareSize = (surfViewWidth < surfViewHeight) ? surfViewWidth : surfViewHeight;
         squareSize = (int) Math.ceil((squareSize - (boardMargins * 2)) / numRowsColumns);
         calculateFirstBoardRect(squareSize, surfViewHeight, surfViewWidth);
     }
@@ -155,8 +156,22 @@ public class Chessboard {
         } else {
             paint.setColor(squareColor1);
         }
-
-
     }
 
+    /**
+     * returns the array of rects representing the board
+     *
+     * @return
+     */
+    public ArrayList<Rect> getboardSquaresArray() {
+        return boardSquaresArray;
+    }
+
+    /**
+     * This method returns the size of squares used for the chessboard
+     * @return
+     */
+    public int getSquareSize(){
+        return squareSize;
+    }
 }

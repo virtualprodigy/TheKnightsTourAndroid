@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.virtualprodigy.theknightstour.R;
 
-import java.util.ArrayList;
 
 /**
  * Created by virtualprodigyllc on 8/10/15.
@@ -128,13 +127,7 @@ public class CalculateKnightMove {
             }
             stringBuffer.append("\n");
         }
-        stringBuffer.append("\n\n");
-        for (int i = 0; i < boardSpaces * boardSpaces; i++){
-            if(i % 8 == 0){
-                stringBuffer.append("\n");
-            }
-            stringBuffer.append(knightsPath[i] + " | ");
-        }
+
         return stringBuffer.toString();
     }
 
@@ -204,6 +197,16 @@ public class CalculateKnightMove {
 
         }
 
+    }
+
+    /**
+     * This method returns the knights path
+     * 1d array
+     *
+     * @return
+     */
+    public int[] getknightsPath() {
+        return knightsPath;
     }
 
 }
