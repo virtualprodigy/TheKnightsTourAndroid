@@ -10,10 +10,10 @@ public class CalculateKnightMove {
     private final int TOTAL_MOVES = 8;
     //This is the dimension(number of spaces) of the board on one side. Since the board is currently being treated
     //as a square there only needs to be one variable for x && y
-    private final int boardspaces = 8;
+    public static final int boardSpaces = 8;
 
     //This 2d array represents the chessboard
-    private final int[][] chessboard = new int[boardspaces][boardspaces];
+    private final int[][] chessboard = new int[boardSpaces][boardSpaces];
     //Knight movement types
     private final int knightMovementPattern[][] = {{2, 1}, {2, -1}, {1, 2}, {1, -2}, {-1, 2},
             {-1, -2}, {-2, 1}, {-2, -1}};
@@ -45,8 +45,8 @@ public class CalculateKnightMove {
      */
     private void initializeChessboard(int initialXPos, int initialYPos) {
 
-        for (int i = 0; i < boardspaces; i++) {
-            for (int y = 0; y < boardspaces; y++) {
+        for (int i = 0; i < boardSpaces; i++) {
+            for (int y = 0; y < boardSpaces; y++) {
                 chessboard[i][y] = 0;
             }
         }
@@ -70,7 +70,7 @@ public class CalculateKnightMove {
         //This array represents the next movement pattern the knight TOTAL_MOVES from it's current position
         int[] nextMovementPattern = new int[2];
 
-        for (int i = 1; i < boardspaces * boardspaces; i++) {
+        for (int i = 1; i < boardSpaces * boardSpaces; i++) {
             nextMovementPattern[0] = initialXPos;
             nextMovementPattern[1] = initialYPos;
             findNextPosition(nextMovementPattern);
@@ -86,8 +86,8 @@ public class CalculateKnightMove {
      * movements
      */
     private void printOutMovementPattern() {
-        for (int i = 0; i < boardspaces; i++) {
-            for (int y = 0; y < boardspaces; y++) {
+        for (int i = 0; i < boardSpaces; i++) {
+            for (int y = 0; y < boardSpaces; y++) {
                 System.out.print(chessboard[i][y] + "  ");
             }
             System.out.println("\n");
@@ -100,8 +100,8 @@ public class CalculateKnightMove {
      */
     public String printKnightsMovementPattern() {
         StringBuffer stringBuffer = new StringBuffer();
-        for (int i = 0; i < boardspaces; i++) {
-            for (int y = 0; y < boardspaces; y++) {
+        for (int i = 0; i < boardSpaces; i++) {
+            for (int y = 0; y < boardSpaces; y++) {
                 stringBuffer.append(chessboard[i][y] + "  ");
             }
             stringBuffer.append("\n");
@@ -121,9 +121,9 @@ public class CalculateKnightMove {
      * @return
      */
     private boolean isAnEmptySpaceWithinBoard(int x, int y) {
-        return (x < boardspaces
+        return (x < boardSpaces
                 && x >= 0
-                && y < boardspaces
+                && y < boardSpaces
                 && y >= 0
                 && chessboard[x][y] == 0);
     }

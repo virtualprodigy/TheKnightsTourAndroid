@@ -8,24 +8,42 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.virtualprodigy.theknightstour.Layout.Chessboard;
+import com.virtualprodigy.theknightstour.Utilities.CalculateKnightMove;
+
 /**
  * Created by virtualprodigyllc on 8/21/15.
  */
 public class KnightsSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
     private KnightsSurfaceThread thread;
     private Context context;
+    private Chessboard chessboard;
 
     public KnightsSurfaceView(Context context) {
         super(context);
-        this.context = context;
-        getHolder().addCallback(this);
-        setFocusable(true);
+        init(context);
     }
 
     public KnightsSurfaceView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
+        init(context);
+    }
+
+    /**
+     * A centralize method are all of the different constructs to intialize
+     * the SurfaceView in the same way without dup code
+     */
+    private void init(Context context) {
         this.context = context;
         getHolder().addCallback(this);
+        setFocusable(true);
+        chessboard = new Chessboard(context, CalculateKnightMove.boardSpaces);
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        chessboard.prepareChessBoardToDraw(h, w);
     }
 
     @Override
@@ -89,6 +107,7 @@ public class KnightsSurfaceView extends SurfaceView implements SurfaceHolder.Cal
     public void render(Canvas canvas) {
         //draw the canvas background first
         canvas.drawColor(Color.BLUE);
+        chessboard.draw(canvas);
 
     }
 

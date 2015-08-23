@@ -21,11 +21,13 @@ public class Chessboard {
     private float boardMargins;
     private int numRowsColumns;
     private Paint paint;
-    private ArrayList<Rect> boardSqauresArray;
+    private ArrayList<Rect> boardSquaresArray;
+    private int squareColor1 = Color.WHITE;
+    private int squareColor2 = Color.BLACK;
 
-    public Chessboard(Context context, Resources res, int numRowsColumns) {
+    public Chessboard(Context context, int numRowsColumns) {
         this.context = context;
-        this.res = res;
+        this.res = context.getResources();
         this.boardMargins = res.getDimension(R.dimen.chessboard_margins);
         //currently assuming the chessboard is a square
         this.numRowsColumns = numRowsColumns;
@@ -33,7 +35,15 @@ public class Chessboard {
         paint.setAntiAlias(true);
         paint.setStyle(Paint.Style.FILL);
         //I believe the first square on a chessboard top left is always white
-        paint.setColor(Color.WHITE);
+        paint.setColor(squareColor1);
+    }
+
+    /**
+     * This method is called to prepare the chessbaord that
+     * will be drawn to the surfaceview
+     */
+    public void prepareChessBoardToDraw(int surfViewHeight, int surfViewWidth) {
+        calcaulteBoardSquareSize(surfViewHeight, surfViewWidth);
     }
 
     /**
@@ -87,11 +97,13 @@ public class Chessboard {
      */
     private void createBoardSquareArray(int squareSize, Rect boardSquareRect) {
         final int orgLeft = boardSquareRect.left;
-        if (boardSqauresArray == null) {
-            boardSqauresArray = new ArrayList<>();
+        if (boardSquaresArray == null) {
+            boardSquaresArray = new ArrayList<>();
+        } else {
+            boardSquaresArray.clear();
         }
-        //add the initial square to the array
-        boardSqauresArray.add(boardSquareRect);
+        //add the initial square to the array. Use the copy construct to prevent over writing values
+        boardSquaresArray.add(new Rect(boardSquareRect));
 
         for (int i = 1; i < numRowsColumns * numRowsColumns; i++) {
             //the row is complete move to the next one
@@ -101,29 +113,50 @@ public class Chessboard {
                 boardSquareRect.right = orgLeft + squareSize;
                 boardSquareRect.bottom = boardSquareRect.top + squareSize;
             } else {
-                boardSquareRect.left = boardSquareRect.right + squareSize; //the current right is the left of the next square
-                boardSquareRect.right =boardSquareRect.left + squareSize;
+                boardSquareRect.left = boardSquareRect.right; //the current right is the left of the next square
+                boardSquareRect.right = boardSquareRect.left + squareSize;
             }
-
-
+            boardSquaresArray.add(new Rect(boardSquareRect));
         }
     }
 
     /**
      * This method draws the squares to the canvas
      */
-    private void draw(Canvas canvas) {
+    public void draw(Canvas canvas) {
+        if (boardSquaresArray.size() == numRowsColumns * numRowsColumns) {
+            int columnCount = 1;
 
-        for (Rect boardSquare : boardSqauresArray) {
-            canvas.drawRect(boardSquare, paint);
-
-            //toggles the color of paint
-            if (paint.getColor() == Color.WHITE) {
-                paint.setColor(Color.BLACK);
-            } else {
-                paint.setColor(Color.WHITE);
+            for (Rect boardSquare : boardSquaresArray) {
+                canvas.drawRect(boardSquare, paint);
+                toggleChessboardColor(columnCount);
+                columnCount += 1;
             }
         }
+    }
+
+    /**
+     * This method swaps the square color on the paint
+     *
+     * @param columnCount
+     */
+    private void toggleChessboardColor(int columnCount) {
+        //toggles the color of paint
+        if (columnCount % 8 == 0) {
+            int tempSwap = squareColor1;
+            squareColor1 = squareColor2;
+            squareColor2 = tempSwap;
+            return;
+        }
+
+
+        if (paint.getColor() == squareColor1) {
+            paint.setColor(squareColor2);
+        } else {
+            paint.setColor(squareColor1);
+        }
+
+
     }
 
 }
