@@ -30,6 +30,8 @@ public class Knight {
     private int[] knightsPath;
     private ArrayList<Rect> boardSquaresArray;
     private Paint paint;
+    private final long drawNextInterval = 1300;
+    private long lastDrawTime = -1;
 
     public Knight(Context context, int[] knightsPath, ArrayList<Rect> boardSquaresArray) {
         this.context = context;
@@ -50,8 +52,7 @@ public class Knight {
     public void createKnightBitmap(int squareSize) {
         int knightSize = (int) (res.getDimension(R.dimen.ten_dp) - squareSize);
 
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        Bitmap original = BitmapFactory.decodeResource(res, R.drawable.knight, options);
+        Bitmap original = BitmapFactory.decodeResource(res, R.drawable.knight, null);
         knightBitmap = Bitmap.createScaledBitmap(original, knightSize, knightSize, false);
 
     }
@@ -65,6 +66,19 @@ public class Knight {
         if (knightBitmap != null) {
             //get the rect for the current position and calculate the
             //drawing coordinates for the knight
+            long currentTime = System.currentTimeMillis();
+            if (lastDrawTime == -1) {
+                lastDrawTime = currentTime;
+            } else if ((currentTime - lastDrawTime) >= drawNextInterval) {
+
+                lastDrawTime = currentTime;
+                if (currentMove == boardSquaresArray.size()) {
+                    currentMove = 1;
+                } else {
+                    currentMove += 1;
+                }
+            }
+
             Rect currentMoveRect = null;
             for (int i = 0; i < knightsPath.length; i++) {
                 if (knightsPath[i] == currentMove) {
