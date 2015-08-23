@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.virtualprodigy.theknightstour.R;
 
+import java.util.ArrayList;
+
 /**
  * Created by virtualprodigyllc on 8/10/15.
  * In the project I'm taking an old class assignment I completed
@@ -18,6 +20,10 @@ public class CalculateKnightMove {
 
     //This 2d array represents the chessboard
     private final int[][] chessboard = new int[boardSpaces][boardSpaces];
+    //this array list holds the knights path. size the drawing of chessboard is stored in a 1d array
+    //having the moves in a 1d array is beneficial, once I find the number of the next moves I can use
+    //the index from this to get the location of the square to draw the knight in the other array
+    private final int[] knightsPath = new int[(boardSpaces * boardSpaces)];
     //Knight movement types
     private final int knightMovementPattern[][] = {{2, 1}, {2, -1}, {1, 2}, {1, -2}, {-1, 2},
             {-1, -2}, {-2, 1}, {-2, -1}};
@@ -36,10 +42,10 @@ public class CalculateKnightMove {
     public void startingPoint() {
 
         //initial starting positions
-        int initialXPos = 7;
-        int initialYPos = 3;
-        initializeChessboard(initialXPos, initialYPos);
-        getKnightsPath(initialXPos, initialYPos);
+        int initialRowPos = 7;
+        int initialColPos = 3;
+        initializeChessboard(initialRowPos, initialColPos);
+        getKnightsPath(initialRowPos, initialColPos);
         printOutMovementPattern();
     }
 
@@ -49,17 +55,20 @@ public class CalculateKnightMove {
      * as 0. These values will be set later to indicate the knights
      * path
      *
-     * @param initialXPos
-     * @param initialYPos
+     * @param initialRowPos
+     * @param initialColPos
      */
-    private void initializeChessboard(int initialXPos, int initialYPos) {
+    private void initializeChessboard(int initialRowPos, int initialColPos) {
 
         for (int i = 0; i < boardSpaces; i++) {
             for (int y = 0; y < boardSpaces; y++) {
                 chessboard[i][y] = 0;
             }
         }
-        chessboard[initialXPos][initialYPos] = 1;
+        //set the knights position in the array for the board and the move list
+        //the equation for a 2d to 1 is index = column + (row * width)
+        chessboard[initialRowPos][initialColPos] = 1;
+        knightsPath[initialRowPos * boardSpaces + initialColPos] = 1;
     }
 
     /**
@@ -69,10 +78,10 @@ public class CalculateKnightMove {
      * the initial position values are passed to find next move and the next move location is found
      * afterwards the intialPos values are updated with the new location and the method starts over again
      *
-     * @param initialXPos
-     * @param initialYPos
+     * @param initialRowPos
+     * @param initialColPos
      */
-    private void getKnightsPath(int initialXPos, int initialYPos) {
+    private void getKnightsPath(int initialRowPos, int initialColPos) {
         //this variable is the current movement number. it starts at two
         //since the knights initial position was already set and I decide against zero index
         int currentMovement = 2;
@@ -80,13 +89,15 @@ public class CalculateKnightMove {
         int[] nextMovementPattern = new int[2];
 
         for (int i = 1; i < boardSpaces * boardSpaces; i++) {
-            nextMovementPattern[0] = initialXPos;
-            nextMovementPattern[1] = initialYPos;
+            nextMovementPattern[0] = initialRowPos;
+            nextMovementPattern[1] = initialColPos;
             findNextPosition(nextMovementPattern);
-            initialXPos = nextMovementPattern[0];
-            initialYPos = nextMovementPattern[1];
-            chessboard[initialXPos][initialYPos] = currentMovement;
+            initialRowPos = nextMovementPattern[0];
+            initialColPos = nextMovementPattern[1];
+            chessboard[initialRowPos][initialColPos] = currentMovement;
+            knightsPath[(initialRowPos * boardSpaces) + initialColPos] = currentMovement;
             currentMovement++;
+
         }
     }
 
@@ -113,44 +124,51 @@ public class CalculateKnightMove {
         stringBuffer.append(context.getString(R.string.knight_text_path_header));
         for (int i = 0; i < boardSpaces; i++) {
             for (int y = 0; y < boardSpaces; y++) {
-                stringBuffer.append(chessboard[i][y] + "  ");
+                stringBuffer.append(chessboard[i][y] + " | ");
             }
             stringBuffer.append("\n");
+        }
+        stringBuffer.append("\n\n");
+        for (int i = 0; i < boardSpaces * boardSpaces; i++){
+            if(i % 8 == 0){
+                stringBuffer.append("\n");
+            }
+            stringBuffer.append(knightsPath[i] + " | ");
         }
         return stringBuffer.toString();
     }
 
     /**
-     * This method checks if x & y are within the boards bounds
+     * This method checks if row & column are within the boards bounds
      * and then it checks to see if the combined coordinate in
      * the 2d array does not have a movement position selected already
      * if all of these are true then the method returns true that
      * this move is to an empty space
      *
-     * @param x
-     * @param y
+     * @param row
+     * @param column
      * @return
      */
-    private boolean isAnEmptySpaceWithinBoard(int x, int y) {
-        return (x < boardSpaces
-                && x >= 0
-                && y < boardSpaces
-                && y >= 0
-                && chessboard[x][y] == 0);
+    private boolean isAnEmptySpaceWithinBoard(int row, int column) {
+        return (row < boardSpaces
+                && row >= 0
+                && column < boardSpaces
+                && column >= 0
+                && chessboard[row][column] == 0);
     }
 
     /**
      * This method loops and determines the the number of empty spaces
      * the knight can move from it's current position
      *
-     * @param x
-     * @param y
+     * @param row
+     * @param column
      * @return
      */
-    private int getNumberOfMoves(int x, int y) {
+    private int getNumberOfMoves(int row, int column) {
         int numberOfMoves = 0;
         for (int loop = 0; loop < TOTAL_MOVES; loop++)
-            if (isAnEmptySpaceWithinBoard(x + knightMovementPattern[loop][0], y + knightMovementPattern[loop][1])) {
+            if (isAnEmptySpaceWithinBoard(row + knightMovementPattern[loop][0], column + knightMovementPattern[loop][1])) {
                 numberOfMoves++;
             }
         return numberOfMoves;
@@ -166,21 +184,21 @@ public class CalculateKnightMove {
      * @param nextMovementPattern
      */
     private void findNextPosition(int nextMovementPattern[]) {
-        int currentX = nextMovementPattern[0];
-        int currentY = nextMovementPattern[1];
-        int nextX = 0;
-        int nextY = 0;
+        int currentRow = nextMovementPattern[0];
+        int currentCol = nextMovementPattern[1];
+        int nextRow = 0;
+        int nextCol = 0;
         int movesFromCurrentPosition = 0;
         int remainingMoves = TOTAL_MOVES;
 
         for (int loop = 0; loop < TOTAL_MOVES; loop++) {
-            nextX = currentX + knightMovementPattern[loop][0];
-            nextY = currentY + knightMovementPattern[loop][1];
-            movesFromCurrentPosition = getNumberOfMoves(nextX, nextY);
+            nextRow = currentRow + knightMovementPattern[loop][0];
+            nextCol = currentCol + knightMovementPattern[loop][1];
+            movesFromCurrentPosition = getNumberOfMoves(nextRow, nextCol);
 
-            if (isAnEmptySpaceWithinBoard(nextX, nextY) && movesFromCurrentPosition < remainingMoves) {
-                nextMovementPattern[0] = nextX;
-                nextMovementPattern[1] = nextY;
+            if (isAnEmptySpaceWithinBoard(nextRow, nextCol) && movesFromCurrentPosition < remainingMoves) {
+                nextMovementPattern[0] = nextRow;
+                nextMovementPattern[1] = nextCol;
                 remainingMoves = movesFromCurrentPosition;
             }
 
