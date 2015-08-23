@@ -1,5 +1,9 @@
 package com.virtualprodigy.theknightstour.Utilities;
 
+import android.content.Context;
+
+import com.virtualprodigy.theknightstour.R;
+
 /**
  * Created by virtualprodigyllc on 8/10/15.
  * In the project I'm taking an old class assignment I completed
@@ -18,6 +22,11 @@ public class CalculateKnightMove {
     private final int knightMovementPattern[][] = {{2, 1}, {2, -1}, {1, 2}, {1, -2}, {-1, 2},
             {-1, -2}, {-2, 1}, {-2, -1}};
 
+    private Context context;
+
+    public CalculateKnightMove(Context context) {
+        this.context = context;
+    }
 
     /**
      * this method kicks off the calculations for the knights tour
@@ -86,6 +95,7 @@ public class CalculateKnightMove {
      * movements
      */
     private void printOutMovementPattern() {
+        System.out.print(context.getString(R.string.knight_text_path_header));
         for (int i = 0; i < boardSpaces; i++) {
             for (int y = 0; y < boardSpaces; y++) {
                 System.out.print(chessboard[i][y] + "  ");
@@ -100,6 +110,7 @@ public class CalculateKnightMove {
      */
     public String printKnightsMovementPattern() {
         StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append(context.getString(R.string.knight_text_path_header));
         for (int i = 0; i < boardSpaces; i++) {
             for (int y = 0; y < boardSpaces; y++) {
                 stringBuffer.append(chessboard[i][y] + "  ");

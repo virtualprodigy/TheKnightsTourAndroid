@@ -6,20 +6,15 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@android:color/black"
     tools:context=".KnightsTourMainActivity">
-
-    <TextView
-        android:id="@+id/hello"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
 
     <com.virtualprodigy.theknightstour.Layout.KnightsSurfaceView.KnightsSurfaceView
         android:id="@+id/knights_tour_gui"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/knights_moves_display"
-        android:layout_below="@+id/hello" />
+        android:layout_alignParentTop="true"/>
 
     <TextView
         android:id="@+id/knights_moves_display"
@@ -27,5 +22,6 @@
         android:layout_height="100dp"
         android:layout_alignParentBottom="true"
         android:fadeScrollbars="false"
+        android:textColor="@android:color/white"
         android:scrollbars="vertical" />
 </RelativeLayout>

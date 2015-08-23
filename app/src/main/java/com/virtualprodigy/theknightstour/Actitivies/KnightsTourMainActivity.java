@@ -22,7 +22,7 @@ public class KnightsTourMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_knights_tour_main);
         ButterKnife.bind(this);
-        knightMovements = new CalculateKnightMove();
+        knightMovements = new CalculateKnightMove(this);
         knightMovements.startingPoint();
         displayKnightMoves.setText(knightMovements.printKnightsMovementPattern());
         //this line of code && android:scrollbars = "vertical" in the xml allow the textview to scroll
