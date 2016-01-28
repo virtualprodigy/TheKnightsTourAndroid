@@ -53,7 +53,7 @@ public class Knight {
         int knightSize = (int) (res.getDimension(R.dimen.ten_dp) - squareSize);
 
         Bitmap original = BitmapFactory.decodeResource(res, R.drawable.knight, null);
-        knightBitmap = Bitmap.createScaledBitmap(original, knightSize, knightSize, false);
+        knightBitmap = Bitmap.createScaledBitmap(original, knightSize, knightSize, true);
 
     }
 
