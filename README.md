@@ -3,9 +3,14 @@ This is my Knight's Tour project. I'm recycling code from an old college project
 I'm going to be adding in a graphic representation of The Kinght's Tour. This project is something I've wanted to do for a while and I'll be slowly adding some cool things to this project.
 
 #Change Log
-Version 1.0
+###Version 1.0
+ 1. Initial upload
 
--Inital upload
+###Version 2.0
+ 1. This version includes a graphic representation of the knight moving across the chessboard
+ 2. There are two issues I'll be creating a branch to fix them.
+    1. The Knight is rendered upside down
+    2. The thread may crash on exit as I hasn't aded the proper code to stop it
 
 #License
    Copyright {2015} {Matthew A Butler}
