@@ -5,7 +5,7 @@ I'm going to be adding in a graphic representation of The Kinght's Tour. This pr
 ## Change Log
 Version 1.0
 
--Inital upload
+-Initial upload
 
 # License
    Copyright {2015} {Matthew A Butler}
