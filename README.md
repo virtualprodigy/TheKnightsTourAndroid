@@ -21,3 +21,6 @@ Version 1.0
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+
+
+![Project Sample Gif](https://github.com/virtualprodigy/TheKnightsTourAndroid/blob/feature/KnightsTourGUI/.video/knight_tour_video.gif)
